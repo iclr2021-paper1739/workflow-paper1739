@@ -1,4 +1,4 @@
-from torch.utils.data import *
+from torch.utils.data import Dataset
 import pandas as pd
 import skimage.io as io
 import skimage.draw as draw

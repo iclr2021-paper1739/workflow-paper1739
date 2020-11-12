@@ -1,4 +1,4 @@
-from .SavingMolDrawing import MolDrawing 
+#from .SavingMolDrawing import MolDrawing 
 from .BondLayerDataset import BondLayerDataset
 from .RoadLayerDataset import RoadLayerDataset
 from .AtomCands_dataset import AtomCands_dataset
