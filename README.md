@@ -10,8 +10,12 @@ This code is made available as supporting material for paper submitted to ICLR20
 
 ## Installation of ChemGrapher
 
-After cloning this repo you can install our implementation of ChemGrapher using
+After cloning this repo you can install our implementation of ChemGrapher in your preferred conda environment using
 
 ```bash
 pip install -e .
 ```
+## How to use the repo?
+
+The available notebook should guid you through the process:
+[Notebook](workflow.ipnp)
