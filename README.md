@@ -15,7 +15,7 @@ After cloning this repo you can install our implementation of ChemGrapher in you
 ```bash
 pip install -e .
 ```
-## How to use the repo?
+## How to use this repo?
 
-The available notebook should guid you through the process:
-[Notebook](workflow.ipnp)
+The available notebook should guide you through the process:
+[Notebook](workflow_notebook.ipynb)
