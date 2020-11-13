@@ -9,6 +9,7 @@ from rdkit.Chem import rdFMCS
 from math import sqrt
 import copy
 import ntpath
+import requests
 
 #colormap = {'0': (1,1,1), '1': (0,0,0), '2': (1,0.65,0), '3': (0.18,0.31,0.97), '4': (1,0.05,0.05), '5': (1,1,0.19), '6': (0.56,0.88,0.31), '7': (0.12,0.94,0.12), '8': (0.65,0.16,0.16), '9': (0.58,0,0.58), '10': (0.08,0,0.58), '11': (0.15,0.15,0.15), '12': (0.07,1,0.19), '13': (0.18,0.31,0.97), '14': (0.80,0.25,0.25), '15': (1,1,1), '16': (0.56,0.88,0.31), '17': (0.12,0.94,0.12), '18': (0.65,0.16,0.16), '19': (0.58,0,0.58), '20': (0.08,0,0.58), '21': (0.08,0,0.58), '22': (0.08,0,0.58)}
 colormap = {'0': (1,1,1), '1': (0,0,0), '2': (1,0.65,0), '3': (0.18,0.31,0.97), '4': (1,0.05,0.05), '5': (1,1,0.19), '6': (0.56,0.88,0.31), '7': (0.12,0.94,0.12), '8': (0.65,0.16,0.16), '9': (0.58,0,0.58), '10': (0.08,0,0.58), '11': (0.15,0.15,0.15), '12': (0.07,1,0.19), '13': (0.18,0.31,0.97), '14': (0,0,0), '15': (1,1,1), '16': (0.56,0.88,0.31), '17': (0.12,0.94,0.12), '18': (0.65,0.16,0.16), '19': (0.58,0,0.58), '20': (0.08,0,0.58), '21': (0.08,0,0.58), '22': (0.08,0,0.58)}
@@ -582,3 +583,28 @@ def label_predict_smiles(original_smiles, filtered_atom_list, filtered_bond_list
                     if predicted_mol is not None:
                        smiles_pred_mol = Chem.MolToSmiles(predicted_mol)
                        print(f"WOW THIS WORKS {inputfile}: {smiles_pred_mol}")
+
+#taken from this StackOverflow answer: https://stackoverflow.com/a/39225039
+
+def download_file_from_google_drive(id, destination):
+    URL = "https://docs.google.com/uc?export=download"
+    session = requests.Session()
+    response = session.get(URL, params = { 'id' : id }, stream = True)
+    token = get_confirm_token(response)
+    if token:
+        params = { 'id' : id, 'confirm' : token }
+        response = session.get(URL, params = params, stream = True)
+    save_response_content(response, destination)    
+
+def get_confirm_token(response):
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            return value
+    return None
+
+def save_response_content(response, destination):
+    CHUNK_SIZE = 32768
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(CHUNK_SIZE):
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)

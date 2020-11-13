@@ -179,7 +179,7 @@ with torch.no_grad():
    m = em.GetMol()
 #### END BUILD RESULTING MOLECULE AND FILTER BONDS IF NECESSARY
 
-   print(f"(PREPROCESSED) SMILES FROM {inputfile}: {Chem.MolToSmiles(m)}")
+#   print(f"(PREPROCESSED) SMILES FROM {inputfile}: {Chem.MolToSmiles(m)}")
    atom_list = filter_nobonds(atom_list, bond_list) 
    file_path2 = "unfiltered_molfiletest"
    chiral = 0
@@ -193,6 +193,7 @@ with torch.no_grad():
       filtered_atom_list, filtered_bond_list = filter_graph(atom_list, bond_list, original_smiles, m)
       label_predict_smiles(original_smiles, filtered_atom_list, filtered_bond_list, inputfile)
    
-   print(f"(FILTERED) SMILES FROM {inputfile}: {Chem.MolToSmiles(predicted_mol)}")
+#   print(f"(FILTERED) SMILES FROM {inputfile}: {Chem.MolToSmiles(predicted_mol)}")
+   print(f"{Chem.MolToSmiles(predicted_mol)}")
 
 

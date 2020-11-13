@@ -8,5 +8,5 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="",
     packages=setuptools.find_packages(),
-    install_requires=["numpy", "scipy", "pandas", "sklearn", "bs4", "scikit-image", "opencv-python"],
+    install_requires=["numpy", "scipy", "pandas", "sklearn", "requests", "bs4", "scikit-image", "opencv-python"],
     )
