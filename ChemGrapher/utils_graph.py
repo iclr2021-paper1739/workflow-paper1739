@@ -10,6 +10,9 @@ from math import sqrt
 import copy
 import ntpath
 import requests
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from matplotlib.lines import Line2D
 
 #colormap = {'0': (1,1,1), '1': (0,0,0), '2': (1,0.65,0), '3': (0.18,0.31,0.97), '4': (1,0.05,0.05), '5': (1,1,0.19), '6': (0.56,0.88,0.31), '7': (0.12,0.94,0.12), '8': (0.65,0.16,0.16), '9': (0.58,0,0.58), '10': (0.08,0,0.58), '11': (0.15,0.15,0.15), '12': (0.07,1,0.19), '13': (0.18,0.31,0.97), '14': (0.80,0.25,0.25), '15': (1,1,1), '16': (0.56,0.88,0.31), '17': (0.12,0.94,0.12), '18': (0.65,0.16,0.16), '19': (0.58,0,0.58), '20': (0.08,0,0.58), '21': (0.08,0,0.58), '22': (0.08,0,0.58)}
 colormap = {'0': (1,1,1), '1': (0,0,0), '2': (1,0.65,0), '3': (0.18,0.31,0.97), '4': (1,0.05,0.05), '5': (1,1,0.19), '6': (0.56,0.88,0.31), '7': (0.12,0.94,0.12), '8': (0.65,0.16,0.16), '9': (0.58,0,0.58), '10': (0.08,0,0.58), '11': (0.15,0.15,0.15), '12': (0.07,1,0.19), '13': (0.18,0.31,0.97), '14': (0,0,0), '15': (1,1,1), '16': (0.56,0.88,0.31), '17': (0.12,0.94,0.12), '18': (0.65,0.16,0.16), '19': (0.58,0,0.58), '20': (0.08,0,0.58), '21': (0.08,0,0.58), '22': (0.08,0,0.58)}
@@ -608,3 +611,29 @@ def save_response_content(response, destination):
         for chunk in response.iter_content(CHUNK_SIZE):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
+
+def visualize_planar(graph, graph_edges, filename):
+    dict_atom = {0: 'empty', 1: 'C', 2: 'H', 3: 'N', 4: 'O', 5: 'S', 6: 'F', 7: 'Cl', 8: 'Br', 9: 'I', 10: 'Se', 11: 'P', 12: 'B', 13: 'Si', 14:'*'}
+    dict_bond = {0: 'none', 1: 'blue', 2: 'orange', 3: 'green', 4: 'blue', 5: 'blue', 6: 'blue', 7: 'blue'} #For sake of simplicity, all stereo bonds will be visualized as single bond
+    image = mpimg.imread(filename)
+    plt.figure(figsize=(20,20))
+    plt.imshow(image)
+#plt.plot([g[1] for g in graph], [g[0] for g in graph], 'ro')
+    plt.scatter([g[1] for g in graph], [g[0] for g in graph],s=150, color='red', alpha=0.3, label='atom predictions')
+    for g in graph:
+        t = "({})".format(dict_atom[g[2]])
+        plt.text(g[1]+5, g[0]-8, t, color='darkred', fontsize=15) 
+    for bond in graph_edges:
+    #print(bond[1])
+        plt.plot([bond[0][1],bond[1][1]],[bond[0][0],bond[1][0]], linewidth=5, color=dict_bond[int(bond[2])], alpha=0.4)
+
+    custom_lines = [Line2D([0], [0], color=dict_bond[1], alpha=0.4, lw=4),
+                Line2D([0], [0], color=dict_bond[2], alpha=0.4, lw=4),
+                Line2D([0], [0], color=dict_bond[3], alpha=0.4, lw=4),
+               Line2D([0], [0], marker='o', color='w', alpha=0.3,
+                          markerfacecolor='r', markersize=12)]
+
+#fig, ax = plt.subplots()
+#lines = ax.plot(data)
+    plt.legend(custom_lines, ['Single Bond', 'Double Bond', 'Triple Bond', 'Atom Prediction'])
+    plt.show()
