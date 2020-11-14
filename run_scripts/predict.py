@@ -19,6 +19,8 @@ import ntpath
 import argparse
 
 parser = argparse.ArgumentParser(description="Make graph prediction given input image - check if correct given labelled dataset")
+list_of_choices = ["smiles", "planar"]
+parser.add_argument("--type", help="Predict SMILES (smiles) or planar (planar) embedding?", type=str, default="smiles", choices=list_of_choices)
 parser.add_argument("--inputfile", help="Input image with compound to predict", type=str, default="1K_images/0/0.png")
 parser.add_argument("--segnetwork", help="Segmentation Network to use", type=str, required=True)
 parser.add_argument("--clas_bond_network", help="Bond Classification Network to use", type=str, required=True)
@@ -194,6 +196,10 @@ with torch.no_grad():
       label_predict_smiles(original_smiles, filtered_atom_list, filtered_bond_list, inputfile)
    
 #   print(f"(FILTERED) SMILES FROM {inputfile}: {Chem.MolToSmiles(predicted_mol)}")
-   print(f"{Chem.MolToSmiles(predicted_mol)}")
+   if args.type == "smiles":
+      print(f"{Chem.MolToSmiles(predicted_mol)}")
+   else:
+      print(atom_list)
+      print(bond_list)
 
 
