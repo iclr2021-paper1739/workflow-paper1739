@@ -6,7 +6,7 @@ This code is made available as supporting material by the authors of the paper s
 
 * PyTorch
 * RDkit
-* ChemGrapher
+* ChemGrapher[(ref)](https://pubs.acs.org/doi/10.1021/acs.jcim.0c00459)
 
 ## Installation of ChemGrapher
 
